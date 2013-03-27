@@ -8,10 +8,6 @@ end
 
 post '/tweet/new' do
   @job_id = TwitterUser.find(session[:twitter_user_id]).tweet(params[:text])
-  puts "%" * 100
-  puts "@job_id is: #{@job_id}"
-  puts "job_id class is #{@job_id.class}"
-  puts "%" * 100
   @job_id.to_s
 end
 
@@ -26,11 +22,14 @@ get '/auth' do
 end
 
 get '/status/:job_id' do
-  
-  puts params[:job_id].inspect
-  puts params[:job_id].class
-  puts "*"*500
-  puts job_is_complete(params[:job_id])
-  job_is_complete(params[:job_id]).to_s
+  status = job_is_complete(params[:job_id])
+  tweet = current_user.tweets.last
+  puts "%" * 100
+  puts status
+  puts status.class
+  puts "%" * 100
+  tweet.successful = status
+  tweet.save!
+  status.to_s
 end
 

@@ -3,6 +3,6 @@ class TwitterUser < ActiveRecord::Base
 
   def tweet(status)
     tweet = Tweet.create(content: status, twitter_user_id: self.id)
-    TweetWorker.perform_async(self.id, status) #changed to pass in id instead of status
+    TweetWorker.perform_async(self.id, status)
   end
 end
