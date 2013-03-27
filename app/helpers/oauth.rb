@@ -20,10 +20,14 @@ helpers do
           :oauth_token => session[:token],                 
           :oauth_token_secret => session[:secret])
 
-    # user = TwitterUser.find_or_create_by_username_and_access_token_and_access_secret(
-    #       :username => @client.user,
-    #       :access_token => session[:token],
-    #       :access_secret => session[:secret])
+    user = TwitterUser.find_or_create_by_twitter_id(@client.user.id)
+    user.username = @client.user.screen_name
+    user.access_token = session[:token]
+    user.access_secret = session[:secret]
+    user.save
 
+    @client
   end
+
+
 end
