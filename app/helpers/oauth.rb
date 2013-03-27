@@ -25,6 +25,7 @@ helpers do
     user.access_token = session[:token]
     user.access_secret = session[:secret]
     user.save
+    session[:twitter_user_id] = user.id
 
     @client
   end
