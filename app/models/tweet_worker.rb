@@ -1,6 +1,5 @@
 class TweetWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => 1
 
   def client(twitter_user_id)
     twitter_user = TwitterUser.find(twitter_user_id)
@@ -14,7 +13,7 @@ class TweetWorker
       user = TwitterUser.find(twitter_user_id)
       client(twitter_user_id).update(status)  
     rescue Twitter::Error => e
-      
+        # >PROPAGATE SOMEWHERE IF ERROR      
     end
 
     # raise "fuck you" <--- FORCING ERRORS
