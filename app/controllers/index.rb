@@ -7,7 +7,15 @@ get '/' do
 end
 
 post '/tweet/new' do
-  @job_id = TwitterUser.find(session[:twitter_user_id]).tweet(params[:text])
+  puts "%" * 100
+  puts params
+  puts "%" * 100
+  unless params[:time].empty?
+    @job_id = TwitterUser.find(session[:twitter_user_id]).tweet_in(params[:time], params[:text])
+  else
+    @job_id = TwitterUser.find(session[:twitter_user_id]).tweet(params[:text])
+  end
+
   @job_id.to_s
 end
 
@@ -24,10 +32,6 @@ end
 get '/status/:job_id' do
   status = job_is_complete(params[:job_id])
   tweet = current_user.tweets.last
-  puts "%" * 100
-  puts status
-  puts status.class
-  puts "%" * 100
   tweet.successful = status
   tweet.save!
   status.to_s
